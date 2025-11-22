@@ -6,9 +6,9 @@ The solution is low-cost, easy to build, and suitable for home labs, kitchens, s
 
 # PROJECT DOCUMENTATION
 
-- [Problem Statement](ProblemStatement.md)
-- [Scope of the Solution](Scope_Of_Solution.md)
-- [Required Components](RequiredComponents.md)
-- [Code Logic Implementation](CodeLogicImplementation.md)
-- [Code For Solution](Code_For_Solution)
-- [Code For Solution](Code_For_Solution.md)
+- [I. Problem Statement](ProblemStatement.md)
+- [II. Scope of the Solution](Scope_Of_Solution.md)
+- [III. Required Components TO DEVELOP SOLUTION](RequiredComponents.md)
+- [V. Code Logic Implementation](CodeLogicImplementation.md)
+- [VI. Code for the Solution](Code_For_Solution)
+
