@@ -1,5 +1,5 @@
 # III. REQUIRED COMPONENTS TO DEVELOP SOLUTION
-1.Hardware Components
+# 1. Hardware Components
 
 1. Raspberry Pi Pico
 - Acts as the main microcontroller.
@@ -34,7 +34,7 @@ Provides:
 - Program uploadin    
 
 
-2.Software Requirements
+# 2. Software Requirements
 
 1. Arduino IDE (Version 2.3.6)
 - Used to write, compile, and upload code to Raspberry Pi Pico.
