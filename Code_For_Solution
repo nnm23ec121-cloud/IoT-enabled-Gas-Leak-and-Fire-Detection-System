@@ -1,0 +1,59 @@
+# VI. CODE FOR THE SOLUTION
+
+// Fire + Smoke Detection Using Raspberry Pi Pico
+// MQ-2 (Analog), Flame Sensor (Digital), Active Buzzer
+
+#define SMOKE_SENSOR 26   // MQ-2 AO → GP26 (ADC0)
+#define FIRE_SENSOR  2    // Flame sensor D0 → GP2 (digital)
+#define BUZZER       5    // Buzzer → GP5
+
+int smokeThreshold = 300;   // Adjust according to your sensor
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(SMOKE_SENSOR, INPUT);   // Smoke sensor AO pin
+  pinMode(FIRE_SENSOR, INPUT);    // Flame sensor DO pin
+  pinMode(BUZZER, OUTPUT);
+
+  digitalWrite(BUZZER, LOW);
+  Serial.println("Fire + Smoke Detection System Started...");
+}
+
+void loop() {
+
+  int smokeValue = analogRead(SMOKE_SENSOR);  // 0–4095 on Pico ADC
+  int fireStatus = digitalRead(FIRE_SENSOR);  // LOW = fire detected
+
+  bool smokeDetected = (smokeValue > smokeThreshold);
+  bool fireDetected  = (fireStatus == LOW);
+
+  //   SERIAL MONITOR OUTPUT
+  if (fireDetected && smokeDetected) {
+    Serial.println("ALERT: FIRE + SMOKE DETECTED!");
+  } 
+  else if (fireDetected) {
+    Serial.println("FIRE DETECTED!");
+  } 
+  else if (smokeDetected) {
+    Serial.println("SMOKE DETECTED!");
+  } 
+  else {
+    Serial.println("No Fire or Smoke");
+  }
+
+  // Also print sensor values
+  Serial.print("Smoke Value: ");
+  Serial.print(smokeValue);
+  Serial.print(" | Fire Status: ");
+  Serial.println(fireDetected ? "DETECTED" : "NO");
+  //   BUZZER CONTROL
+  if (fireDetected || smokeDetected) {
+      digitalWrite(BUZZER, HIGH);   // Buzzer ON
+  } 
+  else {
+      digitalWrite(BUZZER, LOW);    // Buzzer OFF
+  }
+
+  delay(200);
+}
