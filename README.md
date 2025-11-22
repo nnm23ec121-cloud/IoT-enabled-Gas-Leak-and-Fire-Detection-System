@@ -8,7 +8,7 @@ The solution is low-cost, easy to build, and suitable for home labs, kitchens, s
 
 - [I. Problem Statement](ProblemStatement.md)
 - [II. Scope of the Solution](Scope_Of_Solution.md)
-- [III. Required Components TO DEVELOP SOLUTION](RequiredComponents.md)
+- [III. Required Components to Develop Solution](RequiredComponents.md)
 - [V. Code Logic Implementation](CodeLogicImplementation.md)
 - [VI. Code for the Solution](Code_For_Solution)
 
