@@ -1,59 +1,59 @@
 # VI. CODE FOR THE SOLUTION
 
-// Fire + Smoke Detection Using Raspberry Pi Pico
-// MQ-2 (Analog), Flame Sensor (Digital), Active Buzzer
-
-#define SMOKE_SENSOR 26   // MQ-2 AO → GP26 (ADC0)
-#define FIRE_SENSOR  2    // Flame sensor D0 → GP2 (digital)
-#define BUZZER       5    // Buzzer → GP5
-
-int smokeThreshold = 300;   // Adjust according to your sensor
+// Pin definitions
+const int flamePin = 15;     // Flame sensor DO pin
+const int smokePin = 26;     // Smoke sensor AO pin (ADC0)
+const int buzzer = 5;       // Buzzer pin
 
 void setup() {
   Serial.begin(115200);
 
-  pinMode(SMOKE_SENSOR, INPUT);   // Smoke sensor AO pin
-  pinMode(FIRE_SENSOR, INPUT);    // Flame sensor DO pin
-  pinMode(BUZZER, OUTPUT);
-
-  digitalWrite(BUZZER, LOW);
-  Serial.println("Fire + Smoke Detection System Started...");
+  pinMode(flamePin, INPUT);   // Flame sensor is digital
+  pinMode(buzzer, OUTPUT);    // Buzzer
 }
 
 void loop() {
 
-  int smokeValue = analogRead(SMOKE_SENSOR);  // 0–4095 on Pico ADC
-  int fireStatus = digitalRead(FIRE_SENSOR);  // LOW = fire detected
+  int flameValue = digitalRead(flamePin);   // 1 = flame detected
+  int smokeValue = analogRead(smokePin);    // Higher value = more smoke
 
-  bool smokeDetected = (smokeValue > smokeThreshold);
-  bool fireDetected  = (fireStatus == LOW);
+  bool flameDetected = (flameValue == 1);
+  bool smokeDetected = (smokeValue > 800);   // Adjust threshold if needed
 
-  //   SERIAL MONITOR OUTPUT
-  if (fireDetected && smokeDetected) {
-    Serial.println("ALERT: FIRE + SMOKE DETECTED!");
-  } 
-  else if (fireDetected) {
-    Serial.println("FIRE DETECTED!");
-  } 
+  // -------------------------
+  //       PRINT STATUS
+  // -------------------------
+  Serial.print("Flame: ");
+  Serial.print(flameDetected ? "DETECTED" : "NO FLAME");
+
+  Serial.print(" | Smoke: ");
+  Serial.print(smokeDetected ? "DETECTED" : "NO SMOKE");
+
+  Serial.print(" | Smoke Value: ");
+  Serial.println(smokeValue);
+
+  // -------------------------
+  //       ALERT LOGIC
+  // -------------------------
+
+  if (flameDetected && smokeDetected) {
+    Serial.println("⚠️ WARNING: FIRE + SMOKE DETECTED!");
+    digitalWrite(buzzer, HIGH);
+  }
+  else if (flameDetected) {
+    Serial.println("🔥 ALERT: FLAME DETECTED!");
+    digitalWrite(buzzer, HIGH);
+  }
   else if (smokeDetected) {
-    Serial.println("SMOKE DETECTED!");
-  } 
+    Serial.println("💨 ALERT: SMOKE DETECTED!");
+    digitalWrite(buzzer, HIGH);
+  }
   else {
-    Serial.println("No Fire or Smoke");
+    Serial.println("System Normal!!!.");
+    digitalWrite(buzzer, LOW);
   }
 
-  // Also print sensor values
-  Serial.print("Smoke Value: ");
-  Serial.print(smokeValue);
-  Serial.print(" | Fire Status: ");
-  Serial.println(fireDetected ? "DETECTED" : "NO");
-  //   BUZZER CONTROL
-  if (fireDetected || smokeDetected) {
-      digitalWrite(BUZZER, HIGH);   // Buzzer ON
-  } 
-  else {
-      digitalWrite(BUZZER, LOW);    // Buzzer OFF
-  }
-
-  delay(200);
+  Serial.println("-----------------------------------");
+  delay(500);
 }
+
