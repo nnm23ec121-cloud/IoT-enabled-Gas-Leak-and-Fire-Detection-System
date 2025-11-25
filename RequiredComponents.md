@@ -40,4 +40,4 @@ Provides:
 - Used to write, compile, and upload code to Raspberry Pi Pico.
 - Supports C/C++ programming.
 - Required Board Support Package:
-      Raspberry Pi RP2040 Boards by Earle Philhower.
+      Raspberry Pi RP2040 Boards.
