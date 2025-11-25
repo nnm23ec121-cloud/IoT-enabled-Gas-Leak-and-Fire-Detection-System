@@ -13,6 +13,5 @@ The solution is low-cost, easy to build, and suitable for home labs, kitchens, s
 - [IV. Circuit Schematic](Circuit_Schematic.jpeg)
 - [V. Code Logic Implementation](CodeLogicImplementation.md)
 - [VI. Code for the Solution](Code_For_Solution)
-- [VII. IoT Dashboard  Screenshot](IoT_Dashboard_Screenshot.png)
+- [VII. IoT Dashboard Analytics Data Screenshot](IoT_Dashboard_analytics_Data.png)
 - [VIII. Video of the demo](Projec_Vedio_Demo.mp4)
-
