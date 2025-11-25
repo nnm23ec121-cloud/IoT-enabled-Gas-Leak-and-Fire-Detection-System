@@ -1,3 +1,4 @@
+# IoT-enabled Gas Leak and Fire Detection System
 # PROJECT OVERVEIW
 This project aims to design and implement a fire and smoke detection safety system using a Raspberry Pi Pico, smoke (MQ2) sensor, flame sensors, and a buzzer. The system continuously monitors the environment for the presence of fire and smoke using these sensors. Whenever the sensors detects a flame or smoke, the Pico triggers an audible alarm through a buzzer to alert users of potential danger.
 
