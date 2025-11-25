@@ -1,27 +1,49 @@
 # VI. CODE FOR THE SOLUTION
 
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+// WiFi details
+const char* ssid = "OPPO F23 5G";  // WiFi connection name
+const char* password = "virus123";  // WiFi password
+
+// ThingSpeak details
+String apiKey = "ISVM8RCCAG4KCK2Y";  // API Key
+const char* server = "http://api.thingspeak.com/update";
+
 // Pin definitions
-const int flamePin = 15;     // Flame sensor DO pin
-const int smokePin = 26;     // Smoke sensor AO pin 
-const int buzzer = 5;       // Buzzer pin
+const int flamePin = 15;     // Flame sensor DO
+const int smokePin = 26;     // Smoke sensor AO
+const int buzzer = 5;        // Buzzer pin
 
 void setup() {
   Serial.begin(115200);
 
-  pinMode(flamePin, INPUT);   // Flame sensor is digital
-  pinMode(buzzer, OUTPUT);    // Buzzer
+  pinMode(flamePin, INPUT);
+  pinMode(buzzer, OUTPUT);
+
+  Serial.println("Connecting to WiFi...");
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(300);
+    Serial.print(".");
+  }
+
+  Serial.println("\nWiFi Connected!");
 }
 
 void loop() {
 
+  // Read sensor data
   int flameValue = digitalRead(flamePin);   // 1 = flame detected
   int smokeValue = analogRead(smokePin);    // Higher value = more smoke
 
   bool flameDetected = (flameValue == 1);
-  bool smokeDetected = (smokeValue > 800);   // Threshold for smoke
+  bool smokeDetected = (smokeValue > 800);   // Threshold for smoke 
 
-  
-  //       PRINT STATUS
+
+   //       PRINT STATUS
   Serial.print("Flame: ");
   Serial.print(flameDetected ? "DETECTED" : "NO FLAME");
 
@@ -31,26 +53,47 @@ void loop() {
   Serial.print(" | Smoke Value: ");
   Serial.println(smokeValue);
 
-  
-  //       ALERT LOGIC
+ 
+   //       ALERT LOGIC
   if (flameDetected && smokeDetected) {
     Serial.println("⚠️ WARNING: FIRE + SMOKE DETECTED!");
-    digitalWrite(buzzer,LOW);
+    digitalWrite(buzzer, LOW);
   }
-  else if (flameDetected) {
+  else if (flameDetected && !smokeDetected) {
     Serial.println("🔥 ALERT: FLAME DETECTED!");
-    digitalWrite(buzzer,LOW);
+    digitalWrite(buzzer, LOW);
   }
-  else if (smokeDetected) {
+  else if (!flameDetected && smokeDetected) {
     Serial.println("💨 ALERT: SMOKE DETECTED!");
     digitalWrite(buzzer, LOW);
   }
   else {
-    Serial.println("System Normal!!!.");
+    Serial.println("System Normal!!!");
     digitalWrite(buzzer, HIGH);
   }
 
-  Serial.println("-----------------------------------");
-  delay(500);
+  Serial.println("----------------------------------------");
+
+ 
+  //     SEND TO THINGSPEAK
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+
+    String url = String(server)
+                 + "?api_key=" + apiKey
+                 + "&field1=" + String(flameDetected)
+                 + "&field2=" + String(smokeValue)
+                 + "&field3=" + String(smokeDetected)
+                 + "&field4=" + String(flameDetected && smokeDetected);
+
+    http.begin(url);
+    int code = http.GET();
+    http.end();
+
+    Serial.print("ThingSpeak Response: ");
+    Serial.println(code);
+  }
+
+  delay(15000);  // 15 sec delay (ThingSpeak rule)
 }
 
