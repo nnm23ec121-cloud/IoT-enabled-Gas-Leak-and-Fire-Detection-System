@@ -1,7 +1,7 @@
 # V. CODE LOGIC IMPLETMENATION
 The program is written in Arduino IDE to control the Raspberry Pi Pico for gas and fire detection. The MQ-2 smoke sensor is connected to an analog pin (GP26), the flame sensor to a digital pin (GP2), and the buzzer to GP5. The code begins by setting these pins as inputs or outputs and starting serial communication for monitoring.
 
-Inside the main loop, the Pico continuously reads the smoke level from the MQ-2 and the fire status from the flame sensor. The smoke reading is compared with a fixed threshold value to decide whether smoke is present. The flame sensor gives a HIGH signal when fire is detected. If either smoke or fire is detected, the buzzer is turned ON to alert the user; otherwise, the buzzer remains OFF. This checking process repeats continuously, ensuring real-time monitoring and instant alert generation.
+Inside the main loop, the Pico continuously reads the smoke level from the MQ-2 and the fire status from the flame sensor. The smoke reading is compared with a fixed threshold value to decide whether smoke is present. The flame sensor gives a HIGH signal when fire is detected. If either smoke or fire is detected, the buzzer is turned ON to alert the user, otherwise, the buzzer remains OFF. This checking process repeats continuously, ensuring real-time monitoring and instant alert generation. After detecting fire and smoke, the Raspberry Pi Pico connects to WiFi and uploads the sensor values to ThingSpeak. This allows real-time graph visualization of smoke level and flame detection.
 
 
 The system works on the principle that each sensor produces specific output values under different environmental conditions.
