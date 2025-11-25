@@ -4,11 +4,11 @@
 #include <HTTPClient.h>
 
 // WiFi details
-const char* ssid = "OPPO F23 5G";  // WiFi connection name
-const char* password = "virus123";  // WiFi password
+const char* ssid = "YOUR_WIFI_NAME";  // WiFi connection name
+const char* password = "YOUR_WIFI_PASSWORD";  // WiFi password
 
 // ThingSpeak details
-String apiKey = "ISVM8RCCAG4KCK2Y";  // API Key
+String apiKey = "YOUR_API_KEY";  // API Key
 const char* server = "http://api.thingspeak.com/update";
 
 // Pin definitions
